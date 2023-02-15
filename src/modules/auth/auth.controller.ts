@@ -1,34 +1,70 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Redirect,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LocalAuthGuard } from './local/local-auth.guard';
+import { JwtAuthGuard } from './jwt/jwt-auth.guard';
+import { RoleGuard } from './roles/role.guard';
+import { Roles } from './roles/roles.decorator';
+import { UserRoleEnum } from '../user/enums/user-role.enum';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { ConfirmAccountDto } from './dto/confirm-account.dto';
 
+@ApiTags('Aвторизация')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
+  @ApiOperation({ summary: 'Регистрация пользователя' })
+  @Post('signup')
+  async signup(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signup(createUserDto);
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Get('confirm')
+  @ApiOperation({ summary: 'Confirm the account' })
+  async confirm(@Query() query: ConfirmAccountDto) {
+    return this.authService.confirm(query.token);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  @ApiOperation({ summary: 'Логин' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: {
+          type: 'string',
+          example: 'playerone@gmail.com',
+          description: 'Username of a user',
+        },
+        password: {
+          type: 'string',
+          example: 'Player01',
+          description: 'Password of a user',
+        },
+      },
+    },
+  })
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Roles(UserRoleEnum.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBearerAuth()
+  @Get('profile')
+  @ApiOperation({ summary: 'Получение профиля пользователя' })
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
