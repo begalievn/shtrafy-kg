@@ -1,5 +1,11 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { UserGenderEnum } from '../enums/user-gender.enum';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseDto } from '../../../base/dto/base.dto';
 
@@ -18,6 +24,8 @@ export class CreateUserDto extends BaseDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(12)
+  @MinLength(6)
   password: string;
 
   @ApiProperty({
@@ -43,19 +51,20 @@ export class CreateUserDto extends BaseDto {
   @IsNotEmpty()
   phoneNumber: string;
 
-  @ApiProperty({
-    type: Date,
-    format: 'date-time',
-  })
-  // @IsDate()
-  @IsOptional()
-  dateOfBirth: Date;
+  // @ApiProperty({
+  //   type: Date,
+  //   format: 'date-time',
+  // })
+  // // @IsDate()
+  // @IsOptional()
+  // dateOfBirth: Date;
 
-  @ApiProperty({
-    type: 'enum',
-    enum: UserGenderEnum,
-    default: UserGenderEnum.FEMALE,
-  })
-  @IsOptional()
-  gender: UserGenderEnum;
+  // @ApiProperty({
+  //   type: 'enum',
+  //   enum: UserGenderEnum,
+  //   default: UserGenderEnum.FEMALE,
+  // })
+  // @IsOptional()
+  // @IsEnum(UserGenderEnum)
+  // gender: UserGenderEnum;
 }
