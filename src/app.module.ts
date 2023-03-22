@@ -10,6 +10,11 @@ import { SmsNikitaModule } from './services/sms-nikita/sms-nikita.module';
 import { MenteeModule } from './modules/mentee/mentee.module';
 import { MentorModule } from './modules/mentor/mentor.module';
 import { TrainingsModule } from './modules/training/training.module';
+import { NewsModule } from './modules/news/news.module';
+import { ForumModule } from './modules/forum/forum.module';
+import { JetonModule } from './modules/jeton/jeton.module';
+import { LikeModule } from './modules/likes/like.module';
+import { VideoBlogModule } from './modules/video-blog/video-blog.module';
 
 @Module({
   imports: [
@@ -42,6 +47,12 @@ import { TrainingsModule } from './modules/training/training.module';
     CloudinaryModule,
     SmsNikitaModule,
     TrainingsModule,
+    NewsModule,
+    ForumModule,
+    TrainingsModule,
+    JetonModule,
+    VideoBlogModule,
+    LikeModule,
   ],
   controllers: [],
 })
