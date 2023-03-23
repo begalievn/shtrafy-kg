@@ -31,13 +31,12 @@ export class TrainingsController {
   constructor(private readonly trainingsService: TrainingsService) {}
 
   @Post()
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @ApiConsumes('multypart/form-data')
+  @UseGuards(JwtAuthGuard)
+  @ApiConsumes('multipart/form-data')
   @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('image'))
   @ApiOperation({ summary: 'Создание нового тренинга' })
-  async creat(
+  async create(
     @Body() createTrainingDto: CreateTrainingDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
@@ -59,8 +58,7 @@ export class TrainingsController {
     return await this.trainingsService.getOneByTitle(title);
   }
 
-  @Roles(UserRoleEnum.ADMIN)
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Delete(':id')
   @ApiOperation({ summary: 'Удаление тренинга по ID' })
