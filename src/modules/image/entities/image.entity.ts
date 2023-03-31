@@ -1,8 +1,9 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../../base/base.entity';
 import { IsString } from 'class-validator';
 import { Training } from 'src/modules/training/entities/training.entity';
 import { Forum } from 'src/modules/forum/entities/forum.entity';
+import { VideoBlog } from 'src/modules/video-blog/entities/video-blog.entity';
 
 @Entity()
 export class Image extends BaseEntity {
@@ -13,13 +14,21 @@ export class Image extends BaseEntity {
   @IsString()
   publicId: string;
 
-  @ManyToOne(() => Training, (training) => training.image, {
+  @ManyToOne(() => Training, (training) => training.images, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
+  @JoinColumn({ name: 'trainingId' })
   training: Training[];
 
   @ManyToOne(() => Forum, (forum) => forum.image, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   forum: Forum[];
+
+  @ManyToOne(() => VideoBlog, (videoBlog) => videoBlog.lecturerImage, {
+    onDelete: 'CASCADE',
+  })
+  videoBlog: VideoBlog[];
 }
