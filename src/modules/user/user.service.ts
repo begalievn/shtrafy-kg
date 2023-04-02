@@ -89,8 +89,7 @@ export class UserService extends BaseService<User> {
 
     const image = await this.imageService.createImage(file);
     user.image = image;
-    await this.usersRepository.save(user);
-    return this.getWithRelations(userId, 'user', ['image']);
+    return await this.usersRepository.save(user);
   }
 
   async deleteUser(id: number) {
