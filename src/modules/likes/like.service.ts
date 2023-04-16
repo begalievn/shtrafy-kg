@@ -19,41 +19,47 @@ export class LikeService extends BaseService<Likes> {
     super(likesRepo);
   }
 
-  async like(blogId, userEmail: string) {
-    console.log('blogId', blogId);
-    console.log(typeof blogId);
-    // const liked = await this.likesRepo.findOne({
-    //   where: {
-    //     blog: { id: blogId },
-    //     user: { email: userEmail },
-    //   },
-    // });
-    // if (liked) return;
-    // const user = await this.userRepo.findOne({
-    //   where: { email: userEmail },
-    // });
-    // const blog = await this.videoBlogRepo.findOne({
-    //   where: { id: blogId },
-    // });
-    // const newLike = new Likes();
-    // newLike.user = user;
-    // newLike.blog = blog;
-    // return await this.likesRepo.save(newLike);
-    return `liked a blog with id ${blogId}`;
+  async like(blogId: number, userEmail: string) {
+    try {
+      const liked = await this.likesRepo.findOne({
+        where: {
+          blog: { id: blogId },
+          user: { email: userEmail },
+        },
+      });
+      if (liked) return;
+      const user = await this.userRepo.findOne({
+        where: { email: userEmail },
+      });
+      const blog = await this.videoBlogRepo.findOne({
+        where: { id: blogId },
+      });
+      const newLike = new Likes();
+      newLike.user = user;
+      newLike.blog = blog;
+      return await this.likesRepo.save(newLike);
+    } catch (e) {
+      return {
+        message: e.message,
+      };
+    }
   }
 
   async dislike(blogId: number, userEmail: string) {
-    console.log('blogId', blogId);
-    console.log(typeof blogId);
-    // const liked = await this.likesRepo.findOne({
-    //   where: {
-    //     blog: { id: blogId },
-    //     user: { email: userEmail },
-    //   },
-    //   relations: ['blog', 'blog.category'],
-    // });
-    // if (liked) return await this.likesRepo.remove(liked);
-    return `liked a blog with id ${blogId}`;
+    try {
+      const liked = await this.likesRepo.findOne({
+        where: {
+          blog: { id: blogId },
+          user: { email: userEmail },
+        },
+        relations: ['blog', 'blog.category'],
+      });
+      if (liked) return await this.likesRepo.remove(liked);
+    } catch (e) {
+      return {
+        message: e.messge,
+      };
+    }
   }
 
   async getLikes(userEmail: string) {
