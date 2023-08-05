@@ -6,25 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailModule } from './modules/mail/mail.module';
 import { ImageModule } from './modules/image/image.module';
 import { CloudinaryModule } from './services/cloudinary/cloudinary.module';
-import { SmsNikitaModule } from './services/sms-nikita/sms-nikita.module';
-import { MenteeModule } from './modules/mentee/mentee.module';
-import { MentorModule } from './modules/mentor/mentor.module';
-import { TrainingsModule } from './modules/training/training.module';
-import { NewsModule } from './modules/news/news.module';
-import { ForumModule } from './modules/forum/forum.module';
-import { JetonModule } from './modules/jeton/jeton.module';
-import { LikeModule } from './modules/likes/like.module';
-import { VideoBlogModule } from './modules/video-blog/video-blog.module';
-import { CategoryModule } from './modules/categories/category.module';
-import { QuizModule } from './modules/quiz/quiz.module';
-import { QuestionnaireModule } from './modules/questionnaire/questionnaire.module';
-import { CharacterModule } from './modules/character/character.module';
-import { ContentModule } from './modules/content/content.module';
-import { TranslateModule } from './modules/translate/translate.module';
-import { LecturerModule } from './modules/lecturers/lecturers.module';
-import { MentorshipModule } from './modules/mentorship/mentorship.module';
-import { FeedbackModule } from './modules/feedback/feedback.module';
-import { EventModule } from './modules/event/event.module';
 
 @Module({
   imports: [
